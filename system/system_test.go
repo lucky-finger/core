@@ -10,6 +10,11 @@ func TestGetSystemAboutInfo(t *testing.T) {
 		systemAboutInfo, err := GetSystemAboutInfo()
 		convey.So(err, convey.ShouldBeNil)
 		convey.So(systemAboutInfo, convey.ShouldNotBeNil)
-		t.Log(systemAboutInfo.String())
+		convey.So(systemAboutInfo.CPU.Get(systemAboutInfo.CPU.Len-1), convey.ShouldNotBeNil)
+
+		convey.Convey("错误的索引获取CPU", func() {
+			convey.So(systemAboutInfo.CPU.Get(-1), convey.ShouldBeNil)
+			convey.So(systemAboutInfo.CPU.Get(systemAboutInfo.CPU.Len), convey.ShouldBeNil)
+		})
 	})
 }

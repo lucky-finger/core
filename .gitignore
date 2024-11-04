@@ -130,5 +130,6 @@ fabric.properties
 # Ignore all local history of files
 .history
 .ionide
+email/.env
 
 # End of https://www.toptal.com/developers/gitignore/api/go,goland+all,visualstudiocode

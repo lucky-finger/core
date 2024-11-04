@@ -2,6 +2,7 @@ package env
 
 import (
 	"fmt"
+	_ "github.com/joho/godotenv/autoload"
 	"os"
 	"strconv"
 )

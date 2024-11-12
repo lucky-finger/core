@@ -13,6 +13,16 @@ type PublicKey struct {
 	publicKey *rsa.PublicKey
 }
 
+func (p *PublicKey) ToPemMust() []byte {
+	r, _ := p.ToPem()
+	return r
+}
+
+func (p *PublicKey) ToPemStringMust() string {
+	r, _ := p.ToPemString()
+	return r
+}
+
 func (p *PublicKey) ToPem() ([]byte, error) {
 	if p.publicKey == nil {
 		return nil, errors.New("public key is nil")
@@ -36,6 +46,16 @@ func (p *PublicKey) ToPemString() (string, error) {
 type PrivateKey struct {
 	// privateKey 私钥
 	privateKey *rsa.PrivateKey
+}
+
+func (p *PrivateKey) ToPemMust() []byte {
+	r, _ := p.ToPem()
+	return r
+}
+
+func (p *PrivateKey) ToPemStringMust() string {
+	r, _ := p.ToPemString()
+	return r
 }
 
 func (p *PrivateKey) ToPem() ([]byte, error) {

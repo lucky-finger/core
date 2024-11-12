@@ -4,6 +4,10 @@ package security
 type IKeyToPem interface {
 	// ToPem 密钥转pem
 	ToPem() ([]byte, error)
+	// ToPemMust 密钥转pem
+	ToPemMust() []byte
+	// ToPemStringMust 密钥转pem字符串
+	ToPemStringMust() string
 	// ToPemString 密钥转pem字符串
 	ToPemString() (string, error)
 }

@@ -5,7 +5,6 @@ import (
 	"crypto/x509"
 	"encoding/pem"
 	"errors"
-	"github.com/lucky-finger/core/security"
 )
 
 type PublicKey struct {
@@ -86,10 +85,10 @@ type KeyPair struct {
 	privateKey *PrivateKey
 }
 
-func (k *KeyPair) PrivateKey() security.IKeyToPem {
+func (k *KeyPair) PrivateKey() IKeyToPem {
 	return k.privateKey
 }
 
-func (k *KeyPair) PublicKey() security.IKeyToPem {
+func (k *KeyPair) PublicKey() IKeyToPem {
 	return k.publicKey
 }

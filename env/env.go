@@ -4,6 +4,8 @@ import (
 	"fmt"
 	_ "github.com/joho/godotenv/autoload"
 	"os"
+	"os/exec"
+	"runtime"
 	"strconv"
 )
 
@@ -106,4 +108,46 @@ func convert[V BasicType](value string, result *V) error {
 		return fmt.Errorf("unsupported type")
 	}
 	return nil
+}
+
+// SetSystemEnv 设置系统环境变量
+func SetSystemEnv(key, value string) error {
+	switch runtime.GOOS {
+	case "linux", "darwin":
+		// 获取当前用户的 shell 配置文件路径
+		homeDir, err := os.UserHomeDir()
+		if err != nil {
+			return err
+		}
+
+		// 根据不同的 shell 选择不同的配置文件
+		shell := os.Getenv("SHELL")
+		var configFile string
+		switch shell {
+		case "/bin/zsh":
+			configFile = fmt.Sprintf("%s/.zshrc", homeDir)
+		case "/bin/bash":
+			configFile = fmt.Sprintf("%s/.bashrc", homeDir)
+		default:
+			return fmt.Errorf("unsupported shell: %s", shell)
+		}
+
+		// 写入环境变量
+		cmd := exec.Command("bash", "-c", fmt.Sprintf(`echo 'export %s="%s"' >> %s`, key, value, configFile))
+		if err := cmd.Run(); err != nil {
+			return err
+		}
+
+		// 重新加载配置文件
+		cmd = exec.Command("bash", "-c", fmt.Sprintf("source %s", configFile))
+		return cmd.Run()
+
+	case "windows":
+		// Windows 系统使用 setx 命令
+		cmd := exec.Command("setx", key, value)
+		return cmd.Run()
+
+	default:
+		return fmt.Errorf("unsupported operating system: %s", runtime.GOOS)
+	}
 }
